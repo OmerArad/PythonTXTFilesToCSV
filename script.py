@@ -4,14 +4,13 @@ import os
 import csv
 
 dirpath = '/Users/omerar/Documents/Wind Data/Winddata Modified'
-output = 'output_file.csv'
-with open(output, 'w') as outfile:
+tempfile = 'temp_data.csv'
+output = 'merged_data.csv'
+
+# output = 'merged_data.csv'
+with open(tempfile, 'w') as outfile:
     csvout = csv.writer(outfile)
-    # csvout = csv.writer(outfile, quoting=csv.QUOTE_NONE, delimiter=',', quotechar='', escapechar='')
-
-
     csvout.writerow(['Date', 'Time', 'Wind Direction', 'Wind', 'Gust', 'Temperature'])
-
     files = os.listdir(dirpath)
 
     for filename in files:
@@ -20,17 +19,28 @@ with open(output, 'w') as outfile:
         else:
             with open(dirpath + '/' + filename) as afile:
                 csvout.writerow([afile.read()])
-                # csvout.writerows(afile.read())
                 afile.close()
 
     outfile.close()
-    print('Succesfully created ' + output)
+    print('Successfully created ' + tempfile)
 
-
-    f = open(output, 'r')
+    f = open(tempfile, 'r')
     text = f.read()
     f.close()
     text = text.replace("\"","")
-    f = open('test2.csv', 'w')
+    f = open(tempfile, 'w')
     f.write(text)
     f.close()
+
+# TODO: Find a way to remove the blank lines!
+
+    # with open(output) as infile, open('test.csv', 'w') as outfile:
+    with open(tempfile) as infile, open(output, 'w') as outfile:
+        for line in infile:
+            if not line.strip(): continue  # skip the empty line
+            outfile.write(line)  # non-empty line. Write it to output
+
+    if os.path.exists(tempfile):
+        os.remove(tempfile)
+    else:
+        print("The file does not exists")
