@@ -7,7 +7,6 @@ dirpath = '/Users/omerar/Documents/Wind Data/Winddata Modified'
 tempfile = 'temp_data.csv'
 output = 'merged_data.csv'
 
-# output = 'merged_data.csv'
 with open(tempfile, 'w') as outfile:
     csvout = csv.writer(outfile)
     csvout.writerow(['Date', 'Time', 'Wind Direction', 'Wind', 'Gust', 'Temperature'])
@@ -32,9 +31,6 @@ with open(tempfile, 'w') as outfile:
     f.write(text)
     f.close()
 
-# TODO: Find a way to remove the blank lines!
-
-    # with open(output) as infile, open('test.csv', 'w') as outfile:
     with open(tempfile) as infile, open(output, 'w') as outfile:
         for line in infile:
             if not line.strip(): continue  # skip the empty line
